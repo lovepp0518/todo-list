@@ -13,12 +13,15 @@ app.set('views', './views');
 
 // 設置根路由
 app.get('/', (req, res) => {
-  res.render('index'); 
+  res.render('index');
 });
 
 app.get('/todos', (req, res) => {
-  return Todo.findAll()
-    .then((todos) => res.send({ todos }))
+  return Todo.findAll({
+    attributes: ['id', 'name'],
+    raw: true
+  })
+    .then((todos) => res.render('todos', { todos }))
     .catch((err) => res.status(422).json(err))
 })
 
