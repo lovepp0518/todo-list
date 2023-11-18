@@ -2,16 +2,22 @@ const express = require('express');
 const app = express();
 const port = 3000
 
+const { engine } = require('express-handlebars')
+
 const db = require('./models')
 const Todo = db.Todo
 
+app.engine('.hbs', engine({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
+app.set('views', './views');
+
 // 設置根路由
 app.get('/', (req, res) => {
-  res.send('hello world');
+  res.render('index'); 
 });
 
 app.get('/todos', (req, res) => {
-  return  Todo.findAll()
+  return Todo.findAll()
     .then((todos) => res.send({ todos }))
     .catch((err) => res.status(422).json(err))
 })
