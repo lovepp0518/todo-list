@@ -1,0 +1,6 @@
+{{!-- 使用method-override（需先安裝） --}}
+<form action="/todos/{{todo.id}}?_method=PUT" method="POST">
+  <input type="text" placeholder="todo name..." name="name" value="{{todo.name}}">
+  <button type="submit">Save</button>
+  <a href="/todos">back</a>
+</form>

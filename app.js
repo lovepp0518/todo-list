@@ -1,4 +1,5 @@
 const express = require('express');
+const methodOverride = require('method-override'); // 使用 method override
 const app = express();
 const port = 3000
 
@@ -13,6 +14,8 @@ app.set('views', './views');
 
 // 要使用 express.urlencoded 來從請求網址中獲取表單資料，否則就會回傳 undefined
 app.use(express.urlencoded({ extended: true }))
+// 使用 method override 以在表單使用PUT method(表單預設僅能使用GET&POST)
+app.use(methodOverride('_method'))
 
 // 設置根路由
 app.get('/', (req, res) => {
@@ -53,11 +56,21 @@ app.get('/todos/:id', (req, res) => {
 })
 
 app.get('/todos/:id/edit', (req, res) => {
-  res.send(`get todo edit: ${req.params.id}`)
+  const id = req.params.id
+  return Todo.findByPk(id, {
+    attributes: ['id', 'name'],
+    raw: true
+  })
+    .then((todo) => res.render('edit', { todo }))
+    .catch((err) => console.log(err))
 })
 
 app.put('/todos/:id', (req, res) => {
-  res.send('modify todo')
+  const body = req.body
+  const id = req.params.id
+
+  return Todo.update({ name: body.name }, { where: { id } })
+    .then(() => res.redirect(`/todos/${id}`))
 })
 
 app.delete('/todos/:id', (req, res) => {
