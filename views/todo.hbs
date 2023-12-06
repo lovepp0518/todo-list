@@ -1,7 +1,5 @@
 {{!-- 使用flash所傳入的參數message進行顯示訊息的操作 --}}
-{{#if message}}
-<div>{{message}}</div>
-{{/if}}
+{{> message}}
 <p>
   <input type="checkbox" disabled {{#if this.isComplete}} checked {{/if}}>
   {{todo.name}}

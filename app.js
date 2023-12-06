@@ -9,6 +9,9 @@ const { engine } = require('express-handlebars')
 
 const router = require('./routes')
 
+const messageHandler = require('./middlewares/message-handler')
+const errorHandler = require('./middlewares/error-handler')
+
 app.engine('.hbs', engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', './views');
@@ -25,7 +28,12 @@ app.use(session({
 }))
 app.use(flash())
 
+// 需放在session&flash之後，router之前
+app.use(messageHandler)
+
 app.use(router)
+
+app.use(errorHandler)
 
 // 啟動伺服器
 app.listen(port, () => {

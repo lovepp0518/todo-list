@@ -1,11 +1,4 @@
-{{!-- 使用flash所傳入的參數error進行顯示訊息的操作 --}}
-{{#if error}}
-<div>{{error}}</div>
-{{/if}}
-{{!-- 使用flash所傳入的參數message進行顯示訊息的操作 --}}
-{{#if message}}
-<div>{{message}}</div>
-{{/if}}
+{{> message}}
 <a href="/todos/new">Create</a>
 <ul>
   {{#each todos}}
