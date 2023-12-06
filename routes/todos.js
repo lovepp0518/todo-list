@@ -12,11 +12,13 @@ router.get('/', (req, res, next) => {
 
   return Todo.findAll({
     attributes: ['id', 'name', 'isComplete'],
+    offset: (page - 1) * limit,
+    limit,
     raw: true
   })
     // 可用req.flash('success')取出參數傳入hbs
     .then((todos) => res.render('todos', {
-      todos: todos.slice((page - 1) * limit, page * limit),
+      todos,
       prev: page > 1 ? page - 1 : page,
       next: page + 1,
       page
