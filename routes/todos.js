@@ -101,7 +101,7 @@ router.get('/:id/edit', (req, res) => {
   }
 })
 
-router.put('/todos/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   try {
     const { name, isComplete } = req.body
     const id = req.params.id
