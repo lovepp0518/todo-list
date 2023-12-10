@@ -30,10 +30,15 @@ passport.serializeUser((user, done) => {
   return done(null, { id, name, email })
 })
 
+passport.deserializeUser((user, done) => {
+  done(null, { id: user.id })
+})
+
 const todos = require('./todos')
 const users = require('./users')
+const authHandler = require('../middlewares/auth-handler')
 
-router.use('/todos', todos)
+router.use('/todos', authHandler, todos)
 router.use('/users', users)
 
 // 設置根路由

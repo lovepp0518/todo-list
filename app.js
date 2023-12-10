@@ -34,6 +34,7 @@ app.use(session({
 app.use(flash())
 
 app.use(passport.initialize())
+app.use(passport.session())
 
 // 需放在session&flash之後，router之前
 app.use(messageHandler)
