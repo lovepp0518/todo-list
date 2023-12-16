@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User)
+      // 因為預設FK使用table+Id作為關聯欄位，所以此處省略指定FK的動作
     }
   }
   Todo.init({
@@ -18,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     isComplete: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   }, {
