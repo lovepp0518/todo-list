@@ -6,6 +6,9 @@ const router = express.Router()
 const db = require('../models')
 const User = db.User
 
+// 使用bcrypt.js進行密碼加鹽及雜湊
+const bcrypt = require('bcryptjs')
+
 router.post('/', (req, res, next) => {
   const { email, name, password, confirmPassword } = req.body
 
@@ -26,7 +29,8 @@ router.post('/', (req, res, next) => {
         return
       }
 
-      return User.create({ email, name, password })
+      return bcrypt.hash(password, 10)
+        .then((hash) => User.create({ email, name, password: hash }))
     })
     .then((user) => {
       if (!user) {

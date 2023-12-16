@@ -7,6 +7,9 @@ const LocalStrategy = require('passport-local')
 const db = require('../models')
 const User = db.User
 
+// 使用bcrypt.js進行密碼加鹽及雜湊
+const bcrypt = require('bcryptjs')
+
 passport.use(new LocalStrategy({ usernameField: 'email' }, (username, password, done) => {
   return User.findOne({
     attributes: ['id', 'name', 'email', 'password'],
@@ -14,10 +17,17 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (username, password, 
     raw: true
   })
     .then((user) => {
-      if (!user || user.password !== password) {
+      if (!user) {
         return done(null, false, { message: 'email 或密碼錯誤' })
       }
-      return done(null, user)
+
+      return bcrypt.compare(password, user.password)
+        .then((isMatch) => {
+          if (!isMatch) {
+            return done(null, false, { message: 'email 或密碼錯誤' })
+          }
+          return done(null, user)
+        })
     })
     .catch((error) => {
       error.errorMessage = '登入失敗'
