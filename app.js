@@ -4,7 +4,6 @@ const flash = require('connect-flash')
 const session = require('express-session')
 const app = express();
 const port = 3000
-const passport = require('passport')
 
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config()
@@ -13,6 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 const { engine } = require('express-handlebars')
 
 const router = require('./routes')
+const passport = require('./config/passport') // 要取用環境變數，要放在環境變數的設定之後 
 
 const messageHandler = require('./middlewares/message-handler')
 const errorHandler = require('./middlewares/error-handler')
